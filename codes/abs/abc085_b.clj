@@ -12,12 +12,16 @@
   (Integer/parseInt str-int))
 ;; ---------------------
 
-(defn ->input-model [_])
+(defn ->input-model [_]
+  (let [n (parse-int (read-line))
+        ds (map #(-> % trim parse-int) (for [_ (range n)] (read-line)))]
+    [n ds]))
 
-(defn solve [input-model])
+(defn solve [[n ds]]
+  (sort (set ds)))
 
-(defn output [output-model]
-  (println ""))
+(defn output [mochis]
+  (println (format "%d" (count mochis))))
 
 (defn -main [& args]
   (-> {}

@@ -12,12 +12,19 @@
   (Integer/parseInt str-int))
 ;; ---------------------
 
-(defn ->input-model [_])
+(defn ->input-model [_]
+  (let [n (parse-int (read-line))
+        as (map parse-int (split-by-keyword (read-line)))]
+    [n as]))
 
-(defn solve [input-model])
+(defn solve [[n as]]
+  (loop [a 0 b 0 _as (reverse (sort as))]
+    (if-not (zero? (count _as))
+      (recur b (+ a (first _as)) (rest _as))
+      (reverse (sort [a b])))))
 
-(defn output [output-model]
-  (println ""))
+(defn output [[alice bob]]
+  (println (format "%d" (- alice bob))))
 
 (defn -main [& args]
   (-> {}
