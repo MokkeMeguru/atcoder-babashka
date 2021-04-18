@@ -20,9 +20,10 @@
     [A B C X]))
 
 (defn solve [[A B C X]]
-  (for [a (map (partial * 500) (range (inc A))) :when (<= a X)
-        b (map (partial * 100) (range (inc B))) :when (<= (+ a b) X)
-        c (map (partial * 50) (range (inc C))) :when (= (+ a b c) X)]
+  (for [a (map (partial * 500) (range (inc A)))
+        b (map (partial * 100) (range (inc B)))
+        c (map (partial * 50) (range (inc C)))
+        :when (= (+ a b c) X)]
     [a b c]))
 
 (defn output [comb]

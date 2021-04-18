@@ -27,18 +27,22 @@
 ;; ---------------------
 
 (defn ->input-model [_]
-  (map parse-int (split-by-keyword (read-line))))
+  (vec (trim (read-line))))
 
-(defn solve [[N Y]]
-  (or
-   (first (for [a (range (inc N))
-                b (range (- (inc N) a))
-                :when (= Y (+ (* 10000 a) (* 5000 b) (* 1000 (- N a b))))]
-            [a b (- N a b)]))
-   [-1 -1 -1]))
+(defn solve [S]
+  (let [start-8 (apply str (take 8 S))]
+    (cond
+      (zero? (count start-8)) true
+      (> 5 (count start-8)) false
+      (clojure.string/starts-with? start-8 "dreamera") (solve (drop 5 S))
+      (clojure.string/starts-with? start-8 "dreamer") (solve (drop 7 S))
+      (clojure.string/starts-with? start-8 "dream") (solve (drop 5 S))
+      (clojure.string/starts-with? start-8 "eraser") (solve (drop 6 S))
+      (clojure.string/starts-with? start-8 "erase") (solve (drop 5 S))
+      :else false)))
 
-(defn output [comb]
-  (println (clojure.string/join " " comb)))
+(defn output [solve?]
+  (println (if solve? "YES" "NO")))
 
 (defn -main [& args]
   (-> {}

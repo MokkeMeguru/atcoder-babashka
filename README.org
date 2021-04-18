@@ -1,7 +1,7 @@
 #+TITLE: AtCoder with Babashka
 AtCoder with Babashka
 
-Clojure は実行が遅い！
+Clojure は実行が遅い！ (というか最近のバージョンアップデートで既存のコードも TLE するようになった orz)
 
 Babashka (https://github.com/babashka/babashka) ならもうちょっと早く実行できるんじゃないか？の構えをしてみよう！という実験のためのレポジトリです。
 
@@ -81,3 +81,47 @@ AtCoder のページより、提出を行って下さい。
 
 ** テンプレートを変えたいんだけど
 Makefile の TEMPLATE を変えるか、 ~make env~ の引数に ~TEMPLATE=<path-to-template>~ を追加して下さい。
+
+* その他
+Clojure で 競技プログラミング！というのは、趣味でやりたい人を除いて、正直な所全くおすすめできません。
+理由としては、
+- 人気のあるツールは環境が整っているので、高いスコアが得られやすい
+- 知見が少ない (出題者の脳みそも有限なので、過去の問題の知見が生きやすい)
+- 知見のアウトプットに苦しい
+
+などが挙げられます。
+
+また、少なくとも AtCoder なら Python 使ったほうが良いです。(メモリとか実行速度とか以前に、許されているライブラリが多すぎるため)
+あとは C++ (AtCoder Library) とか、それぞれの公式が推しているものを使いましょう。
+
+例えば、Python で組み合わせを計算するならば、
+#+begin_src python
+seq = range(10)
+
+import itertools
+
+len(list(itertools.combinations(seq, 2))) == 45
+#+end_src
+
+とすればアルゴリズムを考えずとも実装できますが (チューニングの話はさておき)、Clojure では
+#+begin_src clojure
+(def seq (range 10))
+
+(defn combination
+  ([n k]
+   (cond
+     (or (zero? n) (zero? k)) []
+     (< n k) []
+     (= n k) (mapv vector (range n) (range n))
+     :else (vec (filter some? (combination n k [] 0)))))
+  ([n k candidate acc]
+   (cond
+     (= k (count candidate)) [candidate]
+     (<= n acc) nil
+     :else (concat (combination n k (conj candidate acc) (inc acc))
+                   (combination n k candidate (inc acc))))))
+
+(= 45 (count (combination 10 2)))
+#+end_src
+
+とだいぶ面倒くさくなります。
