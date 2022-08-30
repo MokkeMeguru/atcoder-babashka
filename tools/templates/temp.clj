@@ -1,3 +1,6 @@
+(ns problem
+  (:require [clojure.string]))
+
 ;; utilities ---------
 (defn split-by-keyword
   ([line]
